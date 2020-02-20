@@ -1,5 +1,5 @@
 import ChildProcess from 'child_process';
-import Core from '@actions/core';
+import * as Core from '@actions/core';
 import FS from 'fs';
 import Path from 'path';
 import { promisify } from 'util';
