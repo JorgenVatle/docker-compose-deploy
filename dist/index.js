@@ -29,8 +29,10 @@ const writeFile = util_1.promisify(fs_1.default.writeFile);
 /**
  * Template scripts that require insertion of some sort of data to work correctly.
  */
-const Templates = {
+const Scripts = {
     GitPostReceive: path_1.default.join(__dirname, '../scripts/git-hooks/post-receive'),
+    PrepareDeploy: path_1.default.join(__dirname, '../scripts/prepare-deploy.sh'),
+    Deploy: path_1.default.join(__dirname, '../scripts/deploy.sh')
 };
 /**
  * Inject a set of variables into the given template.
@@ -57,7 +59,7 @@ function getInputAsArray(name) {
     const ComposeFile = Core.getInput('compose_file');
     const JsonConfig = Core.getInput('json_config');
     const RepoName = process.env.GITHUB_REPOSITORY.replace('.*\/', '');
-    yield injectIntoTemplate(Templates.GitPostReceive, [
+    yield injectIntoTemplate(Scripts.GitPostReceive, [
         {
             target: 'CONTAINER_VALIDATION_TARGETS',
             value: `( ${ValidateContainers.join(', ')} )`
@@ -75,8 +77,9 @@ function getInputAsArray(name) {
     Core.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
-    child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/prepare-deploy.sh'));
-    child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/deploy.sh'));
+    child_process_1.default.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
+    child_process_1.default.execFileSync(Scripts.PrepareDeploy);
+    child_process_1.default.execFileSync(Scripts.Deploy);
 }))().catch((error) => {
     Core.setFailed(error.message);
 });
