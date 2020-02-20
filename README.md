@@ -25,7 +25,7 @@ steps:
     
   # Step 3: Deploy!
   - name: Deploy to Staging
-    uses: JorgenVatle/docker-compose-deploy@v1
+    uses: JorgenVatle/docker-compose-deploy@v1.0
     with:
       deploy_targets: 'server-1.example.com, server-2.example.com' # required, comma separated list of servers to deploy to.
 
