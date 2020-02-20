@@ -1,6 +1,6 @@
 {
   "name": "docker-compose-deploy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Quickly and easily deploy Docker Compose projects to your CentOS machine with minimal effort.\r > This project is experimental and may very likely not work as expected. Use at your own risk.",
   "main": "dist/index.js",
   "scripts": {
