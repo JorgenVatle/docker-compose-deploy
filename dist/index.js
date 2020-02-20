@@ -35,6 +35,12 @@ const Scripts = {
     Deploy: path_1.default.join(__dirname, '../scripts/deploy.sh')
 };
 /**
+ * Child process execution options.
+ */
+const ExecOptions = {
+    cwd: path_1.default.join(__dirname, '../'),
+};
+/**
  * Inject a set of variables into the given template.
  */
 function injectIntoTemplate(templatePath, injections) {
@@ -78,8 +84,8 @@ function getInputAsArray(name) {
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
     child_process_1.default.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
-    child_process_1.default.execFileSync(Scripts.PrepareDeploy);
-    child_process_1.default.execFileSync(Scripts.Deploy);
+    child_process_1.default.execFileSync(Scripts.PrepareDeploy, ExecOptions);
+    child_process_1.default.execFileSync(Scripts.Deploy, ExecOptions);
 }))().catch((error) => {
     Core.setFailed(error.message);
 });
