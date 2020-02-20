@@ -1,4 +1,4 @@
-ssh "root@$1" << "EOF"
+ssh "$DEPLOY_USER@$1" << "EOF"
 
   # Exit if remote repository is already set up
   [ -d "/opt/$GITHUB_REPONAME.git" ] && exit 0
