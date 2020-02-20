@@ -62,6 +62,15 @@ module.exports = require("child_process");
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -82,12 +91,14 @@ const Templates = {
 /**
  * Inject a set of variables into the given template.
  */
-async function injectIntoTemplate(templatePath, injections) {
-    let template = await readFile(templatePath, 'utf8');
-    injections.forEach(({ target, value }) => {
-        template = template.replace(`__${target}__`, value);
+function injectIntoTemplate(templatePath, injections) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let template = yield readFile(templatePath, 'utf8');
+        injections.forEach(({ target, value }) => {
+            template = template.replace(`__${target}__`, value);
+        });
+        yield writeFile(templatePath, template);
     });
-    await writeFile(templatePath, template);
 }
 /**
  * Take a comma separated string and convert it to an array.
@@ -95,14 +106,14 @@ async function injectIntoTemplate(templatePath, injections) {
 function getInputAsArray(name) {
     return core_1.default.getInput(name).split(',').map((entry) => entry.trim());
 }
-(async () => {
+(() => __awaiter(void 0, void 0, void 0, function* () {
     const DeployTargets = getInputAsArray('deploy_targets');
     const ValidateContainers = getInputAsArray('validate_containers');
     const SshUser = core_1.default.getInput('ssh_user');
     const ComposeFile = core_1.default.getInput('compose_file');
     const JsonConfig = core_1.default.getInput('json_config');
     const RepoName = process.env.GITHUB_REPOSITORY.replace('.*\/', '');
-    await injectIntoTemplate(Templates.GitPostReceive, [
+    yield injectIntoTemplate(Templates.GitPostReceive, [
         {
             target: 'CONTAINER_VALIDATION_TARGETS',
             value: `( ${ValidateContainers.join(', ')} )`
@@ -122,7 +133,7 @@ function getInputAsArray(name) {
     core_1.default.exportVariable('DEPLOY_USER', SshUser);
     child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/prepare-deploy.sh'));
     child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/deploy.sh'));
-})().catch((error) => {
+}))().catch((error) => {
     core_1.default.setFailed(error.message);
 });
 
