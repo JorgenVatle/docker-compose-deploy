@@ -6,18 +6,22 @@ Quickly and easily deploy Docker Compose projects to your CentOS machine with mi
 - Automatically prepares your machine, installing **Git**, **Docker** and **Docker-Compose**.
 
 ### Requirements
-- A deploy target server running CentOS 6+
+- A deploy target server(s) running CentOS 6+
 
 ## Usage
 
 ```yaml
 runs-on: ubuntu-latest
 steps:
-  - name: Deploy to Staging
+  - name: Add SSH Credentials # Step 1: Add SSH credentials to your GitHub CI/CD instance
+    uses: shimatoro/ssh-key-action@v2
+    with:
+      key: ${{ secrets.SSH_PRIVATE_KEY }} # required, this will be used when transferring files to your deploy targets
+      known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }} # required, should match up with your deploy targets (see below)
+    
+  - name: Deploy to Staging # Step 2: Deploy!
     uses: JorgenVatle/docker-compose-deploy@v1
     with:
-      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} # required, this will be used when transferring files to your deploy targets
-      ssh_known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }} # required, should match up with your deploy targets
       deploy_targets: 'server-1.example.com, server-2.example.com' # required, comma separated list of servers to deploy to.
 
       ssh_user: 'root' # optional, user to connect to deploy targets with. Defaults to 'root'
