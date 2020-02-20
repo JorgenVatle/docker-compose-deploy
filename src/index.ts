@@ -49,7 +49,7 @@ function getInputAsArray(name: string) {
     await injectIntoTemplate(Templates.GitPostReceive, [
         {
             target: 'CONTAINER_VALIDATION_TARGETS',
-            value: `( ${DeployTargets.join(', ')} )`
+            value: `( ${ValidateContainers.join(', ')} )`
         },
         {
             target: 'COMPOSE_FILE',
