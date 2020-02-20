@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Validate that the following containers are running to emit a successful deploy event.
+CONTAINER_VALIDATION_TARGETS=__CONTAINER_VALIDATION_TARGETS__
+REPO_NAME=__REPO_NAME__
+COMPOSE_FILE=__COMPOSE_FILE__
+
+echo "post-receive: Triggered."
+cd /opt/live/$REPO_NAME
+
+echo "post-receive: git check out…"
+git --git-dir=/opt/$REPO_NAME.git --work-tree=/opt/live/$REPO_NAME checkout production-readonly -f
+
+docker-compose -f "$COMPOSE_FILE" up -d --build
+echo "post-receive: Docker containers successfully recreated."
+
+# Wait for containers to boot up.
+echo "post-receive: Validate deploy status…"
+sleep 8
+
+DEPLOY_FAILED=false
+
+# Validate that containers are running as expected.
+for container in "$CONTAINER_VALIDATION_TARGETS"
+do
+    if [[ -z $(docker ps -q --no-trunc | grep "$(docker-compose ps -q $container)") ]]; then
+        echo "post-receive: '$container' container did not restart properly!"
+        echo "post-receive: DEPLOY_FAILED"
+        DEPLOY_FAILED=true
+        break;
+    else
+        echo "post-receive: RESTARTED & VALIDATED SUCCESSFULLY: $container"
+    fi
+done
+
+if [ "$DEPLOY_FAILED" = false ]
+then
+    echo "post-receive: DEPLOY_COMPLETED"
+fi
