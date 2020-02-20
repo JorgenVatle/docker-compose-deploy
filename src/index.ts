@@ -18,6 +18,13 @@ const Scripts = {
 }
 
 /**
+ * Child process execution options.
+ */
+const ExecOptions = {
+    cwd: Path.join(__dirname, '../');
+}
+
+/**
  * Inject a set of variables into the given template.
  */
 async function injectIntoTemplate(templatePath: string, injections: Array<{
@@ -69,8 +76,8 @@ function getInputAsArray(name: string) {
     Core.exportVariable('DEPLOY_USER', SshUser);
 
     ChildProcess.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
-    ChildProcess.execFileSync(Scripts.PrepareDeploy);
-    ChildProcess.execFileSync(Scripts.Deploy);
+    ChildProcess.execFileSync(Scripts.PrepareDeploy, ExecOptions);
+    ChildProcess.execFileSync(Scripts.Deploy, ExecOptions);
 })().catch((error) => {
     Core.setFailed(error.message);
 })
