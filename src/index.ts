@@ -60,6 +60,7 @@ function getInputAsArray(name: string) {
         }
     ])
 
+    Core.exportVariable('GITHUB_REPONAME', RepoName);
 })().catch((error) => {
     Core.setFailed(error.message);
 })
