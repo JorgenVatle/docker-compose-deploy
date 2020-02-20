@@ -4,7 +4,8 @@
   "description": "Quickly and easily deploy Docker Compose projects to your CentOS machine with minimal effort.\r > This project is experimental and may very likely not work as expected. Use at your own risk.",
   "main": "dist/index.js",
   "scripts": {
-    "preversion": "ncc build src/index.ts && git add dist/index.js -f && git commit -m \"compile package\"",
+    "preversion": "npm run build && git add dist/** node_modules/** && git commit -m \"compile package\"",
+    "build": "tsc",
     "postversion": "git push && git push --tags",
     "watch": "ncc build -w src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
