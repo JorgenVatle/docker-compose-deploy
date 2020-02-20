@@ -16,6 +16,13 @@ inputs:
     description: 'Name of containers we should validate that are running before calling the deploy a success'
     default: 'app'
     required: false
+  json_config:
+    description: >
+      Add a `./config/local.json` file to the root of your repository on the deploy target machine. Very handy for
+      pushing out secrets to your deploy targets. Works very well with Node projects using the
+      [`config`](https://github.com/lorenwest/node-config) package.
+    default: '{}'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
