@@ -43,6 +43,7 @@ function getInputAsArray(name: string) {
     const ValidateContainers = getInputAsArray('validate_containers');
     const SshUser = Core.getInput('ssh_user');
     const ComposeFile = Core.getInput('compose_file');
+    const JsonConfig = Core.getInput('json_config')
     const RepoName = process.env.GITHUB_REPOSITORY!.replace('.*\/', '');
 
     await injectIntoTemplate(Templates.GitPostReceive, [
@@ -61,6 +62,7 @@ function getInputAsArray(name: string) {
     ])
 
     Core.exportVariable('GITHUB_REPONAME', RepoName);
+    Core.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
 })().catch((error) => {
     Core.setFailed(error.message);
 })
