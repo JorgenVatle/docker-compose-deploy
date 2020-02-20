@@ -1,3 +1,4 @@
+import ChildProcess from 'child_process';
 import GitHub from '@actions/github';
 import Core from '@actions/core';
 import FS from 'fs';
@@ -65,6 +66,9 @@ function getInputAsArray(name: string) {
     Core.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
+
+    ChildProcess.execFileSync(Path.join(__dirname, '../scripts/prepare-deploy.sh'));
+    ChildProcess.execFileSync(Path.join(__dirname, '../scripts/deploy.sh'));
 })().catch((error) => {
     Core.setFailed(error.message);
 })
