@@ -64,6 +64,7 @@ function getInputAsArray(name: string) {
     Core.exportVariable('GITHUB_REPONAME', RepoName);
     Core.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
+    Core.exportVariable('DEPLOY_USER', SshUser);
 })().catch((error) => {
     Core.setFailed(error.message);
 })
