@@ -24,11 +24,20 @@ steps:
       compose_file: 'docker-compose.yml' # optional, path/filename of your docker-compose file. Defaults to 'docker-compose.yml'
       validate_container: 'app' # optional, validate that the given container name is running. Otherwise, throw an error. Defaults to 'app' 
 ```
+Make sure that your `SSH_PRIVATE_KEY` can be used on your deploy targets by appending it's associated public key to the
+targets' `~/.ssh/authorized_keys` file. If you start seeing permission issues, your private key is most likely not authorized for use on the target server.
 
 ## What happens in the background?
 1. We synchronize your entire repository to your destination servers. Path: `/opt/live/{your-repository-name}`
 2. After your repository has been synchronized, we build and start and detach from your repository's Docker containers. `docker-compose -f docker-compose.yml up --build -d`
 3. We validate that the container specified in `validate_container` is running. If it's not running, we'll cancel the deploy process and throw an error.
+
+## How do I ...?
+##### Get my `known_hosts`?
+Run `ssh keyscan {deploy target hostname} >> known_hosts`. This will create a `known_hosts` file in your current
+directory containing your server's host ID. Do this for each of your deploy targets and store in your GitHub
+repository's secrets. 
+
 
 ## License
 This repository is licensed under the ISC license.
