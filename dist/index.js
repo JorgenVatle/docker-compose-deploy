@@ -50,6 +50,13 @@ module.exports = require("os");
 
 /***/ }),
 
+/***/ 129:
+/***/ (function(module) {
+
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 325:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -59,6 +66,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const child_process_1 = __importDefault(__webpack_require__(129));
 const core_1 = __importDefault(__webpack_require__(470));
 const fs_1 = __importDefault(__webpack_require__(747));
 const path_1 = __importDefault(__webpack_require__(622));
@@ -112,6 +120,8 @@ function getInputAsArray(name) {
     core_1.default.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
     core_1.default.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     core_1.default.exportVariable('DEPLOY_USER', SshUser);
+    child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/prepare-deploy.sh'));
+    child_process_1.default.execFileSync(path_1.default.join(__dirname, '../scripts/deploy.sh'));
 })().catch((error) => {
     core_1.default.setFailed(error.message);
 });
