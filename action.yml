@@ -1,0 +1,21 @@
+name: 'Docker-Compose Deploy'
+description: 'Deploy your Docker-Compose project to a list of destination servers'
+inputs:
+  deploy_targets:
+    description: 'List of hosts to deploy your application to'
+    required: true
+  ssh_user:
+    description: 'User to log into for deploys. (Needs to have access to `sudo`)'
+    default: 'root'
+    required: false
+  compose_file:
+    description: 'Relative path to your docker-compose file'
+    default: 'docker-compose.yml'
+    required: false
+  validate_container:
+    description: 'Name of containers we should validate that are running before calling the deploy a success'
+    default: 'app'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
