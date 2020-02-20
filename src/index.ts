@@ -11,8 +11,10 @@ const writeFile = promisify(FS.writeFile);
 /**
  * Template scripts that require insertion of some sort of data to work correctly.
  */
-const Templates = {
+const Scripts = {
     GitPostReceive: Path.join(__dirname, '../scripts/git-hooks/post-receive'),
+    PrepareDeploy: Path.join(__dirname, '../scripts/prepare-deploy.sh'),
+    Deploy: Path.join(__dirname, '../scripts/deploy.sh')
 }
 
 /**
@@ -46,7 +48,7 @@ function getInputAsArray(name: string) {
     const JsonConfig = Core.getInput('json_config')
     const RepoName = process.env.GITHUB_REPOSITORY!.replace('.*\/', '');
 
-    await injectIntoTemplate(Templates.GitPostReceive, [
+    await injectIntoTemplate(Scripts.GitPostReceive, [
         {
             target: 'CONTAINER_VALIDATION_TARGETS',
             value: `( ${ValidateContainers.join(', ')} )`
@@ -66,8 +68,9 @@ function getInputAsArray(name: string) {
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
 
-    ChildProcess.execFileSync(Path.join(__dirname, '../scripts/prepare-deploy.sh'));
-    ChildProcess.execFileSync(Path.join(__dirname, '../scripts/deploy.sh'));
+    ChildProcess.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
+    ChildProcess.execFileSync(Scripts.PrepareDeploy);
+    ChildProcess.execFileSync(Scripts.Deploy);
 })().catch((error) => {
     Core.setFailed(error.message);
 })
