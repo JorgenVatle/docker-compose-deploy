@@ -1,5 +1,4 @@
 import ChildProcess from 'child_process';
-import GitHub from '@actions/github';
 import Core from '@actions/core';
 import FS from 'fs';
 import Path from 'path';
