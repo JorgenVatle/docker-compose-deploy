@@ -38,7 +38,7 @@ const Scripts = {
  * Child process execution options.
  */
 const ExecOptions = {
-    cwd: path_1.default.join(__dirname, '../'),
+    cwd: process.env.GITHUB_WORKSPACE,
 };
 /**
  * Inject a set of variables into the given template.
