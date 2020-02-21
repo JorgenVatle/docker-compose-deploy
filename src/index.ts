@@ -21,7 +21,7 @@ const Scripts = {
  * Child process execution options.
  */
 const ExecOptions = {
-    cwd: Path.join(__dirname, '../'),
+    cwd: process.env.GITHUB_WORKSPACE,
 }
 
 /**
