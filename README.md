@@ -47,6 +47,17 @@ Run `ssh keyscan {deploy target hostname} >> known_hosts`. This will create a `k
 directory containing your server's host ID. Do this for each of your deploy targets and store in your GitHub
 repository's secrets. 
 
+## Heads up!
+It is very important that you limit the events that can trigger your workflow. You probably don't want new experimental
+branches being deployed to production. 😅
+
+Appending the following bit to your workflow file should keep you from shooting yourself in the foot.
+```yaml
+on:
+  push:
+    branches:
+      - master
+```
 
 ## License
 This repository is licensed under the ISC license.
