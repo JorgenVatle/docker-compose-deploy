@@ -38,7 +38,7 @@ targets' `~/.ssh/authorized_keys` file. If you start seeing permission issues, y
 
 ## What happens in the background?
 1. We synchronize your entire repository to your destination servers. Path: `/opt/live/{your-repository-name}`
-2. After your repository has been synchronized, we build and start and detach from your repository's Docker containers. `docker-compose -f docker-compose.yml up --build -d`
+2. After your repository has been synchronized, we build, start and detach from your repository's Docker containers. `docker-compose -f docker-compose.yml up --build -d`
 3. We validate that the container specified in `validate_container` is running. If it's not running, we'll cancel the deploy process and throw an error.
 
 ## How do I ...?
