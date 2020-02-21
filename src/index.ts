@@ -7,6 +7,7 @@ import { InjectionTarget } from './Interfaces/Injections';
 
 const readFile = promisify(FS.readFile);
 const writeFile = promisify(FS.writeFile);
+const execFile = promisify(ChildProcess.execFile);
 const __workspace = process.env.GITHUB_WORKSPACE!;
 
 /**
@@ -48,6 +49,24 @@ function getInputAsArray(name: string) {
     return Core.getInput(name).split(',').map((entry) => entry.trim());
 }
 
+/**
+ * Stream a child_process' output to console.
+ */
+function streamConsoleOutput(outputGroup: string) {
+    return ({ stdout, stderr }: { stdout: string, stderr: string }) => {
+        Core.startGroup(outputGroup)
+
+        if (stderr) {
+            Core.error(stderr);
+        }
+        if (stdout) {
+            Core.info(stdout);
+        }
+
+        Core.endGroup();
+    }
+}
+
 (async () => {
     const DeployTargets = getInputAsArray('deploy_targets');
     const ValidateContainers = getInputAsArray('validate_containers');
@@ -78,8 +97,8 @@ function getInputAsArray(name: string) {
 
     ChildProcess.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
     ChildProcess.execSync(`cp -r ${Path.join(__dirname, '../scripts')} ${Path.join(__workspace, '.docker-compose-deploy_scripts')}`)
-    ChildProcess.execFileSync(Scripts.PrepareDeploy, ExecOptions);
-    ChildProcess.execFileSync(Scripts.Deploy, ExecOptions);
+    await execFile(Scripts.PrepareDeploy, ExecOptions).then(streamConsoleOutput('Prepare deploy'));
+    await execFile(Scripts.Deploy, ExecOptions).then(streamConsoleOutput('Deploy to remote'));
 })().catch((error) => {
     Core.setFailed(error.message);
 })
