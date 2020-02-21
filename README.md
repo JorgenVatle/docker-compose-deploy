@@ -58,6 +58,8 @@ on:
     branches:
       - master
 ```
+The [`on`](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) documentation is worth
+a read if you're planning _on_ deploying to production and staging servers.
 
 ## License
 This repository is licensed under the ISC license.
