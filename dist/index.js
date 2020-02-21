@@ -85,7 +85,7 @@ function getInputAsArray(name) {
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
     child_process_1.default.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
-    child_process_1.default.execSync(`cp ${path_1.default.join(__dirname, '../scripts')} ${path_1.default.join(__workspace, '.docker-compose-deploy_scripts')}`);
+    child_process_1.default.execSync(`cp -r ${path_1.default.join(__dirname, '../scripts')} ${path_1.default.join(__workspace, '.docker-compose-deploy_scripts')}`);
     child_process_1.default.execFileSync(Scripts.PrepareDeploy, ExecOptions);
     child_process_1.default.execFileSync(Scripts.Deploy, ExecOptions);
 }))().catch((error) => {
