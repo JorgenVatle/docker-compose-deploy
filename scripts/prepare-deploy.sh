@@ -16,8 +16,8 @@ git checkout -b production-readonly
 echo $JSON_LOCAL_CONFIG > config/local.json
 
 # Enable execution for Bash scripts
-chmod +x scripts/util/*.sh
-cd scripts/util
+chmod +x .docker-compose-deploy_scripts/util/*.sh
+cd .docker-compose-deploy_scripts/util
 
 # Prepare .ssh directory.
 mkdir ~/.ssh

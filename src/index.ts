@@ -7,6 +7,7 @@ import { InjectionTarget } from './Interfaces/Injections';
 
 const readFile = promisify(FS.readFile);
 const writeFile = promisify(FS.writeFile);
+const __workspace = process.env.GITHUB_WORKSPACE!;
 
 /**
  * Template scripts that require insertion of some sort of data to work correctly.
@@ -21,7 +22,7 @@ const Scripts = {
  * Child process execution options.
  */
 const ExecOptions = {
-    cwd: process.env.GITHUB_WORKSPACE,
+    cwd: __workspace,
 }
 
 /**
@@ -76,6 +77,7 @@ function getInputAsArray(name: string) {
     Core.exportVariable('DEPLOY_USER', SshUser);
 
     ChildProcess.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
+    ChildProcess.execSync(`cp ${Path.join(__dirname, 'scripts')} ${Path.join(__workspace, '.docker-compose-deploy_scripts')}`)
     ChildProcess.execFileSync(Scripts.PrepareDeploy, ExecOptions);
     ChildProcess.execFileSync(Scripts.Deploy, ExecOptions);
 })().catch((error) => {
