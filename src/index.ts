@@ -77,7 +77,7 @@ function getInputAsArray(name: string) {
     Core.exportVariable('DEPLOY_USER', SshUser);
 
     ChildProcess.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
-    ChildProcess.execSync(`cp ${Path.join(__dirname, 'scripts')} ${Path.join(__workspace, '.docker-compose-deploy_scripts')}`)
+    ChildProcess.execSync(`cp ${Path.join(__dirname, '../scripts')} ${Path.join(__workspace, '.docker-compose-deploy_scripts')}`)
     ChildProcess.execFileSync(Scripts.PrepareDeploy, ExecOptions);
     ChildProcess.execFileSync(Scripts.Deploy, ExecOptions);
 })().catch((error) => {
