@@ -13,7 +13,7 @@ Reference this repository in a
 [GitHub Actions Workflow](https://help.github.com/en/actions/getting-started-with-github-actions/about-github-actions)
 file. See below for a working implementation of this.
 
-`.github/workflows/cd.yml`
+For example: `.github/workflows/cd.yml`
 ```yaml
 runs-on: ubuntu-latest
 steps:
