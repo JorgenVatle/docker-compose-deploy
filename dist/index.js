@@ -65,7 +65,7 @@ function getInputAsArray(name) {
     const SshUser = Core.getInput('ssh_user');
     const ComposeFile = Core.getInput('compose_file');
     const JsonConfig = Core.getInput('json_config');
-    const RepoName = process.env.GITHUB_REPOSITORY.replace('.*\/', '');
+    const RepoName = process.env.GITHUB_REPOSITORY.replace(/.*\//, '');
     yield injectIntoTemplate(Scripts.GitPostReceive, [
         {
             target: 'CONTAINER_VALIDATION_TARGETS',
