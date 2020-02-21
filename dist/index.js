@@ -26,6 +26,7 @@ const path_1 = __importDefault(require("path"));
 const util_1 = require("util");
 const readFile = util_1.promisify(fs_1.default.readFile);
 const writeFile = util_1.promisify(fs_1.default.writeFile);
+const __workspace = process.env.GITHUB_WORKSPACE;
 /**
  * Template scripts that require insertion of some sort of data to work correctly.
  */
@@ -38,7 +39,7 @@ const Scripts = {
  * Child process execution options.
  */
 const ExecOptions = {
-    cwd: process.env.GITHUB_WORKSPACE,
+    cwd: __workspace,
 };
 /**
  * Inject a set of variables into the given template.
@@ -84,6 +85,7 @@ function getInputAsArray(name) {
     Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
     child_process_1.default.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
+    child_process_1.default.execSync(`cp ${path_1.default.join(__dirname, 'scripts')} ${path_1.default.join(__workspace, '.docker-compose-deploy_scripts')}`);
     child_process_1.default.execFileSync(Scripts.PrepareDeploy, ExecOptions);
     child_process_1.default.execFileSync(Scripts.Deploy, ExecOptions);
 }))().catch((error) => {
