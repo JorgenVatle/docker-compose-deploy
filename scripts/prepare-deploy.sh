@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Install dependencies
-sudo apt install -y rsync
-
 # Get targets from DEPLOY_TARGETS environment variable
 IFS=', ' read -r -a targets <<< "$DEPLOY_TARGETS"
 
