@@ -20,10 +20,6 @@ fi
 chmod +x .docker-compose-deploy_scripts/util/*.sh
 cd .docker-compose-deploy_scripts/util
 
-# Prepare .ssh directory.
-mkdir ~/.ssh
-chmod 700 ~/.ssh
-
 # Prepare each target server for deploy.
 for server in "$targets"
 do
