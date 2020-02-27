@@ -9,8 +9,12 @@ git config user.name GitHub
 git config receive.denyDeleteCurrent ignore
 git checkout -b production-readonly
 
-# Add local config.
-echo $JSON_LOCAL_CONFIG > config/local.json
+# Add local config if configured.
+if [! -z "$JSON_LOCAL_CONFIG" ]
+then
+    mkdir -p config
+    echo $JSON_LOCAL_CONFIG > config/local.json
+fi
 
 # Enable execution for Bash scripts
 chmod +x .docker-compose-deploy_scripts/util/*.sh
