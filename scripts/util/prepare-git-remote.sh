@@ -1,7 +1,7 @@
 ssh "$DEPLOY_USER@$1" << "EOF"
 
   # Exit if remote repository is already set up
-  [ -d "/opt/$GITHUB_REPONAME.git" ] && exit 0
+  [ -d "/opt/$GITHUB_REPONAME.git/.git" ] && exit 0
 
   # Install Git if not available
   if ! [ -x "$(command -v git)" ]; then
