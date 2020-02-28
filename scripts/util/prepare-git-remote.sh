@@ -1,4 +1,4 @@
-REPO_PATH="/opt/live/$GITHUB_REPONAME.git"
+REPO_PATH="/opt/$GITHUB_REPONAME.git"
 SOURCE_PATH="/opt/live/$GITHUB_REPONAME"
 
 ssh "$DEPLOY_USER@$1" << EOF
