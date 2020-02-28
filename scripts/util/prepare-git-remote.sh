@@ -1,7 +1,10 @@
+REPO_PATH="/opt/live/$GITHUB_REPONAME.git"
+SOURCE_PATH="/opt/live/$GITHUB_REPONAME"
+
 ssh "$DEPLOY_USER@$1" << "EOF"
 
   # Exit if remote repository is already set up
-  [ -d "/opt/$GITHUB_REPONAME.git/.git" ] && exit 0
+  [ -d "$REPO_PATH/.git" ] && exit 0
 
   # Install Git if not available
   if ! [ -x "$(command -v git)" ]; then
@@ -10,13 +13,13 @@ ssh "$DEPLOY_USER@$1" << "EOF"
   fi
 
   # Source code
-  mkdir -p "/opt/live/$GITHUB_REPONAME"
+  mkdir -p "$SOURCE_PATH"
 
   # Remote Git repository
-  mkdir -p "/opt/$GITHUB_REPONAME.git"
+  mkdir -p "$REPO_PATH"
 
   # Initialize Git repo
-  cd "/opt/$GITHUB_REPONAME.git"
+  cd "$REPO_PATH"
   git init --bare
 
   echo "Successfully set up Git on $1"
