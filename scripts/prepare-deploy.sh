@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Get targets from DEPLOY_TARGETS environment variable
-IFS=', ' read -r -a targets <<< "$DEPLOY_TARGETS"
-
 # Prepare Git
 git config user.email ci@github.com
 git config user.name GitHub
@@ -21,7 +18,7 @@ chmod +x .docker-compose-deploy_scripts/util/*.sh
 cd .docker-compose-deploy_scripts/util
 
 # Prepare each target server for deploy.
-for server in "$targets"
+for server in "$@"
 do
     ./prepare-git-remote.sh ${server}
     ./sync-git-hooks.sh ${server}
