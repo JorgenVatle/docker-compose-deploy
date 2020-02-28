@@ -1,7 +1,7 @@
 REPO_PATH="/opt/live/$GITHUB_REPONAME.git"
 SOURCE_PATH="/opt/live/$GITHUB_REPONAME"
 
-ssh "$DEPLOY_USER@$1" << "EOF"
+ssh "$DEPLOY_USER@$1" << EOF
 
   # Exit if remote repository is already set up
   if [ -d "$REPO_PATH/.git" ]; then
