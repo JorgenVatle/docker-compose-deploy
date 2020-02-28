@@ -4,7 +4,9 @@ SOURCE_PATH="/opt/live/$GITHUB_REPONAME"
 ssh "$DEPLOY_USER@$1" << "EOF"
 
   # Exit if remote repository is already set up
-  [ -d "$REPO_PATH/.git" ] && exit 0
+  if [ -d "$REPO_PATH/.git" ]; then
+    exit 0;
+  fi
 
   # Install Git if not available
   if ! [ -x "$(command -v git)" ]; then
