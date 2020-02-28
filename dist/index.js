@@ -87,11 +87,10 @@ function streamConsoleOutput(outputGroup) {
     ]);
     Core.exportVariable('GITHUB_REPONAME', RepoName);
     Core.exportVariable('JSON_LOCAL_CONFIG', JsonConfig);
-    Core.exportVariable('DEPLOY_TARGETS', DeployTargets.join(', '));
     Core.exportVariable('DEPLOY_USER', SshUser);
     child_process_1.default.execSync(`chmod +x ${Scripts.PrepareDeploy} ${Scripts.Deploy}`);
     child_process_1.default.execSync(`cp -r ${path_1.default.join(__dirname, '../scripts')} ${path_1.default.join(__workspace, '.docker-compose-deploy_scripts')}`);
-    await execFile(Scripts.PrepareDeploy, ExecOptions).then(streamConsoleOutput('Prepare deploy'));
+    await execFile(Scripts.PrepareDeploy, DeployTargets, ExecOptions).then(streamConsoleOutput('Prepare deploy'));
     await execFile(Scripts.Deploy, ExecOptions).then(streamConsoleOutput('Deploy to remote'));
 })().catch((error) => {
     Core.setFailed(error.message);
